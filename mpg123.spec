@@ -5,11 +5,11 @@
 # Source0 file verified with key 0x231C4CBC60D5CAFE (thomas@orgis.org)
 #
 Name     : mpg123
-Version  : 1.25.1
-Release  : 2
-URL      : https://www.mpg123.de/download/mpg123-1.25.1.tar.bz2
-Source0  : https://www.mpg123.de/download/mpg123-1.25.1.tar.bz2
-Source99 : https://www.mpg123.de/download/mpg123-1.25.1.tar.bz2.sig
+Version  : 1.25.2
+Release  : 3
+URL      : https://www.mpg123.de/download/mpg123-1.25.2.tar.bz2
+Source0  : https://www.mpg123.de/download/mpg123-1.25.2.tar.bz2
+Source99 : https://www.mpg123.de/download/mpg123-1.25.2.tar.bz2.sig
 Summary  : A streaming audio output API derived from mpg123
 Group    : Development/Tools
 License  : LGPL-2.1
@@ -63,14 +63,14 @@ lib components for the mpg123 package.
 
 
 %prep
-%setup -q -n mpg123-1.25.1
+%setup -q -n mpg123-1.25.2
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1499270201
+export SOURCE_DATE_EPOCH=1499780382
 export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-semantic-interposition "
 export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-semantic-interposition "
 export FFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-semantic-interposition "
@@ -86,7 +86,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1499270201
+export SOURCE_DATE_EPOCH=1499780382
 rm -rf %{buildroot}
 %make_install
 
@@ -115,7 +115,7 @@ rm -rf %{buildroot}
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/libmpg123.so.0
-/usr/lib64/libmpg123.so.0.44.1
+/usr/lib64/libmpg123.so.0.44.2
 /usr/lib64/libout123.so.0
 /usr/lib64/libout123.so.0.2.1
 /usr/lib64/mpg123/output_alsa.so

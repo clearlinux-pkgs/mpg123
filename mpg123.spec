@@ -5,11 +5,11 @@
 # Source0 file verified with key 0x231C4CBC60D5CAFE (thomas@orgis.org)
 #
 Name     : mpg123
-Version  : 1.25.3
-Release  : 4
-URL      : https://www.mpg123.de/download/mpg123-1.25.3.tar.bz2
-Source0  : https://www.mpg123.de/download/mpg123-1.25.3.tar.bz2
-Source99 : https://www.mpg123.de/download/mpg123-1.25.3.tar.bz2.sig
+Version  : 1.25.4
+Release  : 5
+URL      : https://www.mpg123.de/download/mpg123-1.25.4.tar.bz2
+Source0  : https://www.mpg123.de/download/mpg123-1.25.4.tar.bz2
+Source99 : https://www.mpg123.de/download/mpg123-1.25.4.tar.bz2.sig
 Summary  : An optimised MPEG Audio decoder
 Group    : Development/Tools
 License  : LGPL-2.1
@@ -63,14 +63,14 @@ lib components for the mpg123 package.
 
 
 %prep
-%setup -q -n mpg123-1.25.3
+%setup -q -n mpg123-1.25.4
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1500833478
+export SOURCE_DATE_EPOCH=1500903258
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
@@ -89,7 +89,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1500833478
+export SOURCE_DATE_EPOCH=1500903258
 rm -rf %{buildroot}
 %make_install
 

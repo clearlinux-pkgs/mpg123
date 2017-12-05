@@ -1,5 +1,5 @@
 PKG_NAME := mpg123
-URL := https://www.mpg123.de/download/mpg123-1.25.7.tar.bz2
+URL = https://www.mpg123.de/download/mpg123-1.25.8.tar.bz2
 
 
 include ../common/Makefile.common

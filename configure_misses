@@ -20,7 +20,60 @@ Configure miss: sun/audioio.h usability
 Configure miss: sun/audioio.h presence
 Configure miss: sun/audioio.h
 Configure miss: sys/audioio.h usability
-Configure miss: sys/audioio.h presence
+Configure miss: sys/audioio.h
+Configure miss: asm/audioio.h usability
+Configure miss: asm/audioio.h presence
+Configure miss: asm/audioio.h
+Configure miss: sys/audio.h usability
+Configure miss: sys/audio.h presence
+Configure miss: sys/audio.h
+Configure miss: if we have wasapi headers
+Configure miss: ESD
+Configure miss: JACK
+Configure miss: Pa_Initialize in -lportaudio
+Configure miss: AuOpenServer in -laudio
+Configure miss: artsc
+Configure miss: OpenAL/al.h usability
+Configure miss: OpenAL/al.h presence
+Configure miss: OpenAL/al.h
+Configure miss: OpenAL/alc.h usability
+Configure miss: OpenAL/alc.h presence
+Configure miss: OpenAL/alc.h
+Configure miss: AL/al.h usability
+Configure miss: AL/al.h presence
+Configure miss: AL/al.h
+Configure miss: AL/alc.h usability
+Configure miss: AL/alc.h presence
+Configure miss: AL/alc.h
+Configure miss: al.h usability
+Configure miss: al.h presence
+Configure miss: al.h
+Configure miss: alc.h usability
+Configure miss: alc.h presence
+Configure miss: alc.h
+Configure miss: if you are too dumbing dumb for the dummy
+Configure miss: -Werror in CFLAGS (It breaks tests)
+Configure miss: if you are up to something totally static with LDFLAGS/CFLAGS
+Configure miss: powf in -lmx
+Configure miss: os2.h usability
+Configure miss: os2.h presence
+Configure miss: os2.h
+Configure miss: tcsetattr in -los2term
+Configure miss: pcm_open in -ltinyalsa
+Configure miss: machine/soundcard.h usability
+Configure miss: machine/soundcard.h presence
+Configure miss: machine/soundcard.h
+Configure miss: AudioUnit/AudioUnit.h usability
+Configure miss: AudioUnit/AudioUnit.h presence
+Configure miss: AudioUnit/AudioUnit.h
+Configure miss: AudioToolbox/AudioToolbox.h usability
+Configure miss: AudioToolbox/AudioToolbox.h presence
+Configure miss: AudioToolbox/AudioToolbox.h
+Configure miss: sio_open in -lsndio
+Configure miss: sun/audioio.h usability
+Configure miss: sun/audioio.h presence
+Configure miss: sun/audioio.h
+Configure miss: sys/audioio.h usability
 Configure miss: sys/audioio.h
 Configure miss: asm/audioio.h usability
 Configure miss: asm/audioio.h presence

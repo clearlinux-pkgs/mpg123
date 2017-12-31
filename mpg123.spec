@@ -6,7 +6,7 @@
 #
 Name     : mpg123
 Version  : 1.25.8
-Release  : 9
+Release  : 11
 URL      : https://www.mpg123.de/download/mpg123-1.25.8.tar.bz2
 Source0  : https://www.mpg123.de/download/mpg123-1.25.8.tar.bz2
 Source99 : https://www.mpg123.de/download/mpg123-1.25.8.tar.bz2.sig
@@ -64,13 +64,16 @@ lib components for the mpg123 package.
 
 %prep
 %setup -q -n mpg123-1.25.8
+pushd ..
+cp -a mpg123-1.25.8 buildavx2
+popd
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1512445800
+export SOURCE_DATE_EPOCH=1514731402
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
@@ -79,8 +82,15 @@ export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-
 export FFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 %configure --disable-static
-make V=1  %{?_smp_mflags}
+make  %{?_smp_mflags}
 
+pushd ../buildavx2/
+export CFLAGS="$CFLAGS -m64 -march=haswell"
+export CXXFLAGS="$CXXFLAGS -m64 -march=haswell"
+export LDFLAGS="$LDFLAGS -m64 -march=haswell"
+%configure --disable-static    --libdir=/usr/lib64/haswell --bindir=/usr/bin/haswell
+make  %{?_smp_mflags}
+popd
 %check
 export LANG=C
 export http_proxy=http://127.0.0.1:9/
@@ -89,15 +99,24 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1512445800
+export SOURCE_DATE_EPOCH=1514731402
 rm -rf %{buildroot}
+pushd ../buildavx2/
+%make_install
+popd
 %make_install
 
 %files
 %defattr(-,root,root,-)
+/usr/lib64/haswell/pkgconfig/libmpg123.pc
+/usr/lib64/haswell/pkgconfig/libout123.pc
 
 %files bin
 %defattr(-,root,root,-)
+/usr/bin/haswell/mpg123
+/usr/bin/haswell/mpg123-id3dump
+/usr/bin/haswell/mpg123-strip
+/usr/bin/haswell/out123
 /usr/bin/mpg123
 /usr/bin/mpg123-id3dump
 /usr/bin/mpg123-strip
@@ -106,6 +125,8 @@ rm -rf %{buildroot}
 %files dev
 %defattr(-,root,root,-)
 /usr/include/*.h
+/usr/lib64/haswell/libmpg123.so
+/usr/lib64/haswell/libout123.so
 /usr/lib64/libmpg123.so
 /usr/lib64/libout123.so
 /usr/lib64/pkgconfig/libmpg123.pc
@@ -117,6 +138,15 @@ rm -rf %{buildroot}
 
 %files lib
 %defattr(-,root,root,-)
+/usr/lib64/haswell/libmpg123.so.0
+/usr/lib64/haswell/libmpg123.so.0.44.7
+/usr/lib64/haswell/libout123.so.0
+/usr/lib64/haswell/libout123.so.0.2.1
+/usr/lib64/haswell/mpg123/output_alsa.so
+/usr/lib64/haswell/mpg123/output_dummy.so
+/usr/lib64/haswell/mpg123/output_oss.so
+/usr/lib64/haswell/mpg123/output_pulse.so
+/usr/lib64/haswell/mpg123/output_sdl.so
 /usr/lib64/libmpg123.so.0
 /usr/lib64/libmpg123.so.0.44.7
 /usr/lib64/libout123.so.0

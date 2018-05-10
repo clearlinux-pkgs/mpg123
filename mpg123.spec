@@ -6,7 +6,7 @@
 #
 Name     : mpg123
 Version  : 1.25.10
-Release  : 14
+Release  : 15
 URL      : https://www.mpg123.de/download/mpg123-1.25.10.tar.bz2
 Source0  : https://www.mpg123.de/download/mpg123-1.25.10.tar.bz2
 Source99 : https://www.mpg123.de/download/mpg123-1.25.10.tar.bz2.sig

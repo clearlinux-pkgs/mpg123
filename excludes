@@ -1,7 +1,8 @@
 # This file contains the output files that need %exclude. Full path
 # names, one per line.
-/usr/lib64/haswell/mpg123/output_alsa.so
-/usr/lib64/haswell/mpg123/output_dummy.so
-/usr/lib64/haswell/mpg123/output_oss.so
-/usr/lib64/haswell/mpg123/output_pulse.so
-/usr/lib64/haswell/mpg123/output_sdl.so
+/usr/lib64/mpg123/haswell/output_alsa.so
+/usr/lib64/mpg123/haswell/output_dummy.so
+/usr/lib64/mpg123/haswell/output_openal.so
+/usr/lib64/mpg123/haswell/output_oss.so
+/usr/lib64/mpg123/haswell/output_pulse.so
+/usr/lib64/mpg123/haswell/output_sdl.so

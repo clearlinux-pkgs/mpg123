@@ -6,7 +6,7 @@
 #
 Name     : mpg123
 Version  : 1.25.10
-Release  : 16
+Release  : 17
 URL      : https://www.mpg123.de/download/mpg123-1.25.10.tar.bz2
 Source0  : https://www.mpg123.de/download/mpg123-1.25.10.tar.bz2
 Source99 : https://www.mpg123.de/download/mpg123-1.25.10.tar.bz2.sig
@@ -118,7 +118,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1546433926
+export SOURCE_DATE_EPOCH=1546434528
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
@@ -158,7 +158,7 @@ cd ../buildavx2;
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1546433926
+export SOURCE_DATE_EPOCH=1546434528
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/mpg123
 cp COPYING %{buildroot}/usr/share/package-licenses/mpg123/COPYING
@@ -211,6 +211,12 @@ popd
 
 %files lib
 %defattr(-,root,root,-)
+%exclude /usr/lib64/mpg123/haswell/output_alsa.so
+%exclude /usr/lib64/mpg123/haswell/output_dummy.so
+%exclude /usr/lib64/mpg123/haswell/output_openal.so
+%exclude /usr/lib64/mpg123/haswell/output_oss.so
+%exclude /usr/lib64/mpg123/haswell/output_pulse.so
+%exclude /usr/lib64/mpg123/haswell/output_sdl.so
 /usr/lib64/haswell/libmpg123.so.0
 /usr/lib64/haswell/libmpg123.so.0.44.8
 /usr/lib64/haswell/libout123.so.0
@@ -219,12 +225,6 @@ popd
 /usr/lib64/libmpg123.so.0.44.8
 /usr/lib64/libout123.so.0
 /usr/lib64/libout123.so.0.2.2
-/usr/lib64/mpg123/haswell/output_alsa.so
-/usr/lib64/mpg123/haswell/output_dummy.so
-/usr/lib64/mpg123/haswell/output_openal.so
-/usr/lib64/mpg123/haswell/output_oss.so
-/usr/lib64/mpg123/haswell/output_pulse.so
-/usr/lib64/mpg123/haswell/output_sdl.so
 /usr/lib64/mpg123/output_alsa.so
 /usr/lib64/mpg123/output_dummy.so
 /usr/lib64/mpg123/output_openal.so

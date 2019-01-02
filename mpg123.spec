@@ -6,17 +6,28 @@
 #
 Name     : mpg123
 Version  : 1.25.10
-Release  : 15
+Release  : 16
 URL      : https://www.mpg123.de/download/mpg123-1.25.10.tar.bz2
 Source0  : https://www.mpg123.de/download/mpg123-1.25.10.tar.bz2
 Source99 : https://www.mpg123.de/download/mpg123-1.25.10.tar.bz2.sig
 Summary  : An optimised MPEG Audio decoder
 Group    : Development/Tools
 License  : LGPL-2.1
-Requires: mpg123-bin
-Requires: mpg123-lib
-Requires: mpg123-doc
+Requires: mpg123-bin = %{version}-%{release}
+Requires: mpg123-lib = %{version}-%{release}
+Requires: mpg123-license = %{version}-%{release}
+Requires: mpg123-man = %{version}-%{release}
 BuildRequires : alsa-lib-dev
+BuildRequires : gcc-dev32
+BuildRequires : gcc-libgcc32
+BuildRequires : gcc-libstdc++32
+BuildRequires : glibc-dev32
+BuildRequires : glibc-libc32
+BuildRequires : openal-soft-dev
+BuildRequires : pkg-config
+BuildRequires : pkgconfig(32libpulse-simple)
+BuildRequires : pkgconfig(32openal)
+BuildRequires : pkgconfig(32sdl)
 BuildRequires : pkgconfig(libpulse-simple)
 BuildRequires : pkgconfig(sdl)
 
@@ -30,6 +41,8 @@ raw data to stdout and different sound systems depending on your platform.
 %package bin
 Summary: bin components for the mpg123 package.
 Group: Binaries
+Requires: mpg123-license = %{version}-%{release}
+Requires: mpg123-man = %{version}-%{release}
 
 %description bin
 bin components for the mpg123 package.
@@ -38,32 +51,64 @@ bin components for the mpg123 package.
 %package dev
 Summary: dev components for the mpg123 package.
 Group: Development
-Requires: mpg123-lib
-Requires: mpg123-bin
-Provides: mpg123-devel
+Requires: mpg123-lib = %{version}-%{release}
+Requires: mpg123-bin = %{version}-%{release}
+Provides: mpg123-devel = %{version}-%{release}
 
 %description dev
 dev components for the mpg123 package.
 
 
-%package doc
-Summary: doc components for the mpg123 package.
-Group: Documentation
+%package dev32
+Summary: dev32 components for the mpg123 package.
+Group: Default
+Requires: mpg123-lib32 = %{version}-%{release}
+Requires: mpg123-bin = %{version}-%{release}
+Requires: mpg123-dev = %{version}-%{release}
 
-%description doc
-doc components for the mpg123 package.
+%description dev32
+dev32 components for the mpg123 package.
 
 
 %package lib
 Summary: lib components for the mpg123 package.
 Group: Libraries
+Requires: mpg123-license = %{version}-%{release}
 
 %description lib
 lib components for the mpg123 package.
 
 
+%package lib32
+Summary: lib32 components for the mpg123 package.
+Group: Default
+Requires: mpg123-license = %{version}-%{release}
+
+%description lib32
+lib32 components for the mpg123 package.
+
+
+%package license
+Summary: license components for the mpg123 package.
+Group: Default
+
+%description license
+license components for the mpg123 package.
+
+
+%package man
+Summary: man components for the mpg123 package.
+Group: Default
+
+%description man
+man components for the mpg123 package.
+
+
 %prep
 %setup -q -n mpg123-1.25.10
+pushd ..
+cp -a mpg123-1.25.10 build32
+popd
 pushd ..
 cp -a mpg123-1.25.10 buildavx2
 popd
@@ -73,7 +118,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1520358675
+export SOURCE_DATE_EPOCH=1546433926
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
@@ -84,11 +129,21 @@ export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -f
 %configure --disable-static
 make  %{?_smp_mflags}
 
+pushd ../build32/
+export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
+export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32"
+export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32"
+export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32"
+%configure --disable-static    --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
+make  %{?_smp_mflags}
+popd
+unset PKG_CONFIG_PATH
 pushd ../buildavx2/
 export CFLAGS="$CFLAGS -m64 -march=haswell"
 export CXXFLAGS="$CXXFLAGS -m64 -march=haswell"
 export LDFLAGS="$LDFLAGS -m64 -march=haswell"
-%configure --disable-static    --libdir=/usr/lib64/haswell --bindir=/usr/bin/haswell
+%configure --disable-static
 make  %{?_smp_mflags}
 popd
 %check
@@ -97,12 +152,27 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
+cd ../build32;
+make VERBOSE=1 V=1 %{?_smp_mflags} check || :
+cd ../buildavx2;
+make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1520358675
+export SOURCE_DATE_EPOCH=1546433926
 rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/share/package-licenses/mpg123
+cp COPYING %{buildroot}/usr/share/package-licenses/mpg123/COPYING
+pushd ../build32/
+%make_install32
+if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
+then
+pushd %{buildroot}/usr/lib32/pkgconfig
+for i in *.pc ; do ln -s $i 32$i ; done
+popd
+fi
+popd
 pushd ../buildavx2/
-%make_install
+%make_install_avx2
 popd
 %make_install
 
@@ -130,17 +200,17 @@ popd
 /usr/lib64/pkgconfig/libmpg123.pc
 /usr/lib64/pkgconfig/libout123.pc
 
-%files doc
+%files dev32
 %defattr(-,root,root,-)
-%doc /usr/share/man/man1/*
+/usr/lib32/libmpg123.so
+/usr/lib32/libout123.so
+/usr/lib32/pkgconfig/32libmpg123.pc
+/usr/lib32/pkgconfig/32libout123.pc
+/usr/lib32/pkgconfig/libmpg123.pc
+/usr/lib32/pkgconfig/libout123.pc
 
 %files lib
 %defattr(-,root,root,-)
-%exclude /usr/lib64/haswell/mpg123/output_alsa.so
-%exclude /usr/lib64/haswell/mpg123/output_dummy.so
-%exclude /usr/lib64/haswell/mpg123/output_oss.so
-%exclude /usr/lib64/haswell/mpg123/output_pulse.so
-%exclude /usr/lib64/haswell/mpg123/output_sdl.so
 /usr/lib64/haswell/libmpg123.so.0
 /usr/lib64/haswell/libmpg123.so.0.44.8
 /usr/lib64/haswell/libout123.so.0
@@ -149,8 +219,36 @@ popd
 /usr/lib64/libmpg123.so.0.44.8
 /usr/lib64/libout123.so.0
 /usr/lib64/libout123.so.0.2.2
+/usr/lib64/mpg123/haswell/output_alsa.so
+/usr/lib64/mpg123/haswell/output_dummy.so
+/usr/lib64/mpg123/haswell/output_openal.so
+/usr/lib64/mpg123/haswell/output_oss.so
+/usr/lib64/mpg123/haswell/output_pulse.so
+/usr/lib64/mpg123/haswell/output_sdl.so
 /usr/lib64/mpg123/output_alsa.so
 /usr/lib64/mpg123/output_dummy.so
+/usr/lib64/mpg123/output_openal.so
 /usr/lib64/mpg123/output_oss.so
 /usr/lib64/mpg123/output_pulse.so
 /usr/lib64/mpg123/output_sdl.so
+
+%files lib32
+%defattr(-,root,root,-)
+/usr/lib32/libmpg123.so.0
+/usr/lib32/libmpg123.so.0.44.8
+/usr/lib32/libout123.so.0
+/usr/lib32/libout123.so.0.2.2
+/usr/lib32/mpg123/output_dummy.so
+/usr/lib32/mpg123/output_openal.so
+/usr/lib32/mpg123/output_oss.so
+/usr/lib32/mpg123/output_pulse.so
+/usr/lib32/mpg123/output_sdl.so
+
+%files license
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/mpg123/COPYING
+
+%files man
+%defattr(0644,root,root,0755)
+/usr/share/man/man1/mpg123.1
+/usr/share/man/man1/out123.1

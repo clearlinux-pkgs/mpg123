@@ -1,4 +1,6 @@
 # This file contains pkgconfig build requirements that get picked up
 # but are undesirable. One entry per line, no whitespace.
 esound
+32esound
 jack
+32jack

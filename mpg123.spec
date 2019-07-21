@@ -5,12 +5,12 @@
 # Source0 file verified with key 0x231C4CBC60D5CAFE (thomas@orgis.org)
 #
 Name     : mpg123
-Version  : 1.25.10
-Release  : 17
-URL      : https://www.mpg123.de/download/mpg123-1.25.10.tar.bz2
-Source0  : https://www.mpg123.de/download/mpg123-1.25.10.tar.bz2
-Source99 : https://www.mpg123.de/download/mpg123-1.25.10.tar.bz2.sig
-Summary  : An optimised MPEG Audio decoder
+Version  : 1.25.11
+Release  : 18
+URL      : https://www.mpg123.de/download/mpg123-1.25.11.tar.bz2
+Source0  : https://www.mpg123.de/download/mpg123-1.25.11.tar.bz2
+Source99 : https://www.mpg123.de/download/mpg123-1.25.11.tar.bz2.sig
+Summary  : A console based real time MPEG Audio Player for Layer 1, 2 and 3
 Group    : Development/Tools
 License  : LGPL-2.1
 Requires: mpg123-bin = %{version}-%{release}
@@ -42,7 +42,6 @@ raw data to stdout and different sound systems depending on your platform.
 Summary: bin components for the mpg123 package.
 Group: Binaries
 Requires: mpg123-license = %{version}-%{release}
-Requires: mpg123-man = %{version}-%{release}
 
 %description bin
 bin components for the mpg123 package.
@@ -54,6 +53,8 @@ Group: Development
 Requires: mpg123-lib = %{version}-%{release}
 Requires: mpg123-bin = %{version}-%{release}
 Provides: mpg123-devel = %{version}-%{release}
+Requires: mpg123 = %{version}-%{release}
+Requires: mpg123 = %{version}-%{release}
 
 %description dev
 dev components for the mpg123 package.
@@ -105,20 +106,21 @@ man components for the mpg123 package.
 
 
 %prep
-%setup -q -n mpg123-1.25.10
+%setup -q -n mpg123-1.25.11
 pushd ..
-cp -a mpg123-1.25.10 build32
+cp -a mpg123-1.25.11 build32
 popd
 pushd ..
-cp -a mpg123-1.25.10 buildavx2
+cp -a mpg123-1.25.11 buildavx2
 popd
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1546434528
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1563740618
+export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
@@ -147,7 +149,7 @@ export LDFLAGS="$LDFLAGS -m64 -march=haswell"
 make  %{?_smp_mflags}
 popd
 %check
-export LANG=C
+export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
@@ -158,7 +160,7 @@ cd ../buildavx2;
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1546434528
+export SOURCE_DATE_EPOCH=1563740618
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/mpg123
 cp COPYING %{buildroot}/usr/share/package-licenses/mpg123/COPYING
@@ -218,11 +220,11 @@ popd
 %exclude /usr/lib64/mpg123/haswell/output_pulse.so
 %exclude /usr/lib64/mpg123/haswell/output_sdl.so
 /usr/lib64/haswell/libmpg123.so.0
-/usr/lib64/haswell/libmpg123.so.0.44.8
+/usr/lib64/haswell/libmpg123.so.0.44.9
 /usr/lib64/haswell/libout123.so.0
 /usr/lib64/haswell/libout123.so.0.2.2
 /usr/lib64/libmpg123.so.0
-/usr/lib64/libmpg123.so.0.44.8
+/usr/lib64/libmpg123.so.0.44.9
 /usr/lib64/libout123.so.0
 /usr/lib64/libout123.so.0.2.2
 /usr/lib64/mpg123/output_alsa.so
@@ -235,7 +237,7 @@ popd
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/libmpg123.so.0
-/usr/lib32/libmpg123.so.0.44.8
+/usr/lib32/libmpg123.so.0.44.9
 /usr/lib32/libout123.so.0
 /usr/lib32/libout123.so.0.2.2
 /usr/lib32/mpg123/output_dummy.so

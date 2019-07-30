@@ -6,11 +6,11 @@
 #
 Name     : mpg123
 Version  : 1.25.11
-Release  : 18
+Release  : 19
 URL      : https://www.mpg123.de/download/mpg123-1.25.11.tar.bz2
 Source0  : https://www.mpg123.de/download/mpg123-1.25.11.tar.bz2
-Source99 : https://www.mpg123.de/download/mpg123-1.25.11.tar.bz2.sig
-Summary  : A console based real time MPEG Audio Player for Layer 1, 2 and 3
+Source1 : https://www.mpg123.de/download/mpg123-1.25.11.tar.bz2.sig
+Summary  : An optimised MPEG Audio decoder
 Group    : Development/Tools
 License  : LGPL-2.1
 Requires: mpg123-bin = %{version}-%{release}
@@ -53,7 +53,6 @@ Group: Development
 Requires: mpg123-lib = %{version}-%{release}
 Requires: mpg123-bin = %{version}-%{release}
 Provides: mpg123-devel = %{version}-%{release}
-Requires: mpg123 = %{version}-%{release}
 Requires: mpg123 = %{version}-%{release}
 
 %description dev
@@ -119,7 +118,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1563740618
+export SOURCE_DATE_EPOCH=1564462405
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -160,7 +159,7 @@ cd ../buildavx2;
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1563740618
+export SOURCE_DATE_EPOCH=1564462405
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/mpg123
 cp COPYING %{buildroot}/usr/share/package-licenses/mpg123/COPYING
@@ -177,6 +176,13 @@ pushd ../buildavx2/
 %make_install_avx2
 popd
 %make_install
+## Remove excluded files
+rm -f %{buildroot}/usr/lib64/mpg123/haswell/output_alsa.so
+rm -f %{buildroot}/usr/lib64/mpg123/haswell/output_dummy.so
+rm -f %{buildroot}/usr/lib64/mpg123/haswell/output_openal.so
+rm -f %{buildroot}/usr/lib64/mpg123/haswell/output_oss.so
+rm -f %{buildroot}/usr/lib64/mpg123/haswell/output_pulse.so
+rm -f %{buildroot}/usr/lib64/mpg123/haswell/output_sdl.so
 
 %files
 %defattr(-,root,root,-)
@@ -213,12 +219,6 @@ popd
 
 %files lib
 %defattr(-,root,root,-)
-%exclude /usr/lib64/mpg123/haswell/output_alsa.so
-%exclude /usr/lib64/mpg123/haswell/output_dummy.so
-%exclude /usr/lib64/mpg123/haswell/output_openal.so
-%exclude /usr/lib64/mpg123/haswell/output_oss.so
-%exclude /usr/lib64/mpg123/haswell/output_pulse.so
-%exclude /usr/lib64/mpg123/haswell/output_sdl.so
 /usr/lib64/haswell/libmpg123.so.0
 /usr/lib64/haswell/libmpg123.so.0.44.9
 /usr/lib64/haswell/libout123.so.0

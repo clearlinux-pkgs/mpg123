@@ -5,12 +5,12 @@
 # Source0 file verified with key 0x231C4CBC60D5CAFE (thomas@orgis.org)
 #
 Name     : mpg123
-Version  : 1.25.13
-Release  : 23
-URL      : https://www.mpg123.de/download/mpg123-1.25.13.tar.bz2
-Source0  : https://www.mpg123.de/download/mpg123-1.25.13.tar.bz2
-Source1 : https://www.mpg123.de/download/mpg123-1.25.13.tar.bz2.sig
-Summary  : Console based real time MPEG Audio Player for Layer 1, 2 and 3
+Version  : 1.26.0
+Release  : 24
+URL      : https://www.mpg123.de/download/mpg123-1.26.0.tar.bz2
+Source0  : https://www.mpg123.de/download/mpg123-1.26.0.tar.bz2
+Source1  : https://www.mpg123.de/download/mpg123-1.26.0.tar.bz2.sig
+Summary  : An optimised MPEG Audio decoder
 Group    : Development/Tools
 License  : LGPL-2.1
 Requires: mpg123-bin = %{version}-%{release}
@@ -18,6 +18,7 @@ Requires: mpg123-lib = %{version}-%{release}
 Requires: mpg123-license = %{version}-%{release}
 Requires: mpg123-man = %{version}-%{release}
 BuildRequires : alsa-lib-dev
+BuildRequires : buildreq-cmake
 BuildRequires : gcc-dev32
 BuildRequires : gcc-libgcc32
 BuildRequires : gcc-libstdc++32
@@ -28,9 +29,10 @@ BuildRequires : pkg-config
 BuildRequires : pkgconfig(32libpulse-simple)
 BuildRequires : pkgconfig(32openal)
 BuildRequires : pkgconfig(32sdl)
+BuildRequires : pkgconfig(32sdl2)
 BuildRequires : pkgconfig(libpulse-simple)
 BuildRequires : pkgconfig(sdl)
-BuildRequires : util-linux
+BuildRequires : pkgconfig(sdl2)
 
 %description
 This is a console based decoder/player for mono/stereo mpeg audio files,
@@ -54,7 +56,6 @@ Group: Development
 Requires: mpg123-lib = %{version}-%{release}
 Requires: mpg123-bin = %{version}-%{release}
 Provides: mpg123-devel = %{version}-%{release}
-Requires: mpg123 = %{version}-%{release}
 Requires: mpg123 = %{version}-%{release}
 
 %description dev
@@ -107,12 +108,13 @@ man components for the mpg123 package.
 
 
 %prep
-%setup -q -n mpg123-1.25.13
+%setup -q -n mpg123-1.26.0
+cd %{_builddir}/mpg123-1.26.0
 pushd ..
-cp -a mpg123-1.25.13 build32
+cp -a mpg123-1.26.0 build32
 popd
 pushd ..
-cp -a mpg123-1.25.13 buildavx2
+cp -a mpg123-1.26.0 buildavx2
 popd
 
 %build
@@ -120,15 +122,14 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1572104020
-# -Werror is for werrorists
+export SOURCE_DATE_EPOCH=1590372410
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
 export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export FFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export FCFLAGS="$FFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export FFLAGS="$FFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 %configure --disable-static
 make  %{?_smp_mflags}
@@ -146,6 +147,8 @@ unset PKG_CONFIG_PATH
 pushd ../buildavx2/
 export CFLAGS="$CFLAGS -m64 -march=haswell"
 export CXXFLAGS="$CXXFLAGS -m64 -march=haswell"
+export FFLAGS="$FFLAGS -m64 -march=haswell"
+export FCFLAGS="$FCFLAGS -m64 -march=haswell"
 export LDFLAGS="$LDFLAGS -m64 -march=haswell"
 %configure --disable-static
 make  %{?_smp_mflags}
@@ -162,10 +165,10 @@ cd ../buildavx2;
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1572104020
+export SOURCE_DATE_EPOCH=1590372410
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/mpg123
-cp %{_builddir}/mpg123-1.25.13/COPYING %{buildroot}/usr/share/package-licenses/mpg123/d58c071fe842ce5c7fa04837e348cc50bfed3ff4
+cp %{_builddir}/mpg123-1.26.0/COPYING %{buildroot}/usr/share/package-licenses/mpg123/d58c071fe842ce5c7fa04837e348cc50bfed3ff4
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -206,32 +209,43 @@ rm -f %{buildroot}/usr/lib64/mpg123/haswell/output_sdl.so
 /usr/include/fmt123.h
 /usr/include/mpg123.h
 /usr/include/out123.h
+/usr/include/syn123.h
 /usr/lib64/haswell/libmpg123.so
 /usr/lib64/haswell/libout123.so
+/usr/lib64/haswell/libsyn123.so
 /usr/lib64/libmpg123.so
 /usr/lib64/libout123.so
+/usr/lib64/libsyn123.so
 /usr/lib64/pkgconfig/libmpg123.pc
 /usr/lib64/pkgconfig/libout123.pc
+/usr/lib64/pkgconfig/libsyn123.pc
 
 %files dev32
 %defattr(-,root,root,-)
 /usr/lib32/libmpg123.so
 /usr/lib32/libout123.so
+/usr/lib32/libsyn123.so
 /usr/lib32/pkgconfig/32libmpg123.pc
 /usr/lib32/pkgconfig/32libout123.pc
+/usr/lib32/pkgconfig/32libsyn123.pc
 /usr/lib32/pkgconfig/libmpg123.pc
 /usr/lib32/pkgconfig/libout123.pc
+/usr/lib32/pkgconfig/libsyn123.pc
 
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/haswell/libmpg123.so.0
-/usr/lib64/haswell/libmpg123.so.0.44.10
+/usr/lib64/haswell/libmpg123.so.0.45.1
 /usr/lib64/haswell/libout123.so.0
-/usr/lib64/haswell/libout123.so.0.2.2
+/usr/lib64/haswell/libout123.so.0.3.0
+/usr/lib64/haswell/libsyn123.so.0
+/usr/lib64/haswell/libsyn123.so.0.1.0
 /usr/lib64/libmpg123.so.0
-/usr/lib64/libmpg123.so.0.44.10
+/usr/lib64/libmpg123.so.0.45.1
 /usr/lib64/libout123.so.0
-/usr/lib64/libout123.so.0.2.2
+/usr/lib64/libout123.so.0.3.0
+/usr/lib64/libsyn123.so.0
+/usr/lib64/libsyn123.so.0.1.0
 /usr/lib64/mpg123/output_alsa.so
 /usr/lib64/mpg123/output_dummy.so
 /usr/lib64/mpg123/output_openal.so
@@ -242,9 +256,11 @@ rm -f %{buildroot}/usr/lib64/mpg123/haswell/output_sdl.so
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/libmpg123.so.0
-/usr/lib32/libmpg123.so.0.44.10
+/usr/lib32/libmpg123.so.0.45.1
 /usr/lib32/libout123.so.0
-/usr/lib32/libout123.so.0.2.2
+/usr/lib32/libout123.so.0.3.0
+/usr/lib32/libsyn123.so.0
+/usr/lib32/libsyn123.so.0.1.0
 /usr/lib32/mpg123/output_dummy.so
 /usr/lib32/mpg123/output_openal.so
 /usr/lib32/mpg123/output_oss.so

@@ -6,7 +6,7 @@
 #
 Name     : mpg123
 Version  : 1.26.3
-Release  : 28
+Release  : 29
 URL      : https://www.mpg123.de/download/mpg123-1.26.3.tar.bz2
 Source0  : https://www.mpg123.de/download/mpg123-1.26.3.tar.bz2
 Source1  : https://www.mpg123.de/download/mpg123-1.26.3.tar.bz2.sig
@@ -90,7 +90,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1600306809
+export SOURCE_DATE_EPOCH=1600353392
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -122,7 +122,7 @@ cd ../buildavx2;
 make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1600306809
+export SOURCE_DATE_EPOCH=1600353392
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/mpg123
 cp %{_builddir}/mpg123-1.26.3/COPYING %{buildroot}/usr/share/package-licenses/mpg123/d58c071fe842ce5c7fa04837e348cc50bfed3ff4

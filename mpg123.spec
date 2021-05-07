@@ -5,11 +5,11 @@
 # Source0 file verified with key 0x231C4CBC60D5CAFE (thomas@orgis.org)
 #
 Name     : mpg123
-Version  : 1.26.5
-Release  : 32
-URL      : https://www.mpg123.de/download/mpg123-1.26.5.tar.bz2
-Source0  : https://www.mpg123.de/download/mpg123-1.26.5.tar.bz2
-Source1  : https://www.mpg123.de/download/mpg123-1.26.5.tar.bz2.sig
+Version  : 1.27.0
+Release  : 33
+URL      : https://www.mpg123.de/download/mpg123-1.27.0.tar.bz2
+Source0  : https://www.mpg123.de/download/mpg123-1.27.0.tar.bz2
+Source1  : https://www.mpg123.de/download/mpg123-1.27.0.tar.bz2.sig
 Summary  : An optimised MPEG Audio decoder
 Group    : Development/Tools
 License  : GPL-2.0 LGPL-2.1
@@ -105,13 +105,13 @@ man components for the mpg123 package.
 
 
 %prep
-%setup -q -n mpg123-1.26.5
-cd %{_builddir}/mpg123-1.26.5
+%setup -q -n mpg123-1.27.0
+cd %{_builddir}/mpg123-1.27.0
 pushd ..
-cp -a mpg123-1.26.5 build32
+cp -a mpg123-1.27.0 build32
 popd
 pushd ..
-cp -a mpg123-1.26.5 buildavx2
+cp -a mpg123-1.27.0 buildavx2
 popd
 
 %build
@@ -119,7 +119,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1616510531
+export SOURCE_DATE_EPOCH=1620398447
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -162,10 +162,10 @@ cd ../buildavx2;
 make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1616510531
+export SOURCE_DATE_EPOCH=1620398447
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/mpg123
-cp %{_builddir}/mpg123-1.26.5/COPYING %{buildroot}/usr/share/package-licenses/mpg123/5b0649acc39fef80cccbf195783245940f951fc5
+cp %{_builddir}/mpg123-1.27.0/COPYING %{buildroot}/usr/share/package-licenses/mpg123/5b0649acc39fef80cccbf195783245940f951fc5
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -232,15 +232,15 @@ rm -f %{buildroot}/usr/lib64/mpg123/haswell/output_sdl.so
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/haswell/libmpg123.so.0
-/usr/lib64/haswell/libmpg123.so.0.45.3
+/usr/lib64/haswell/libmpg123.so.0.46.0
 /usr/lib64/haswell/libout123.so.0
-/usr/lib64/haswell/libout123.so.0.3.0
+/usr/lib64/haswell/libout123.so.0.4.0
 /usr/lib64/haswell/libsyn123.so.0
 /usr/lib64/haswell/libsyn123.so.0.1.2
 /usr/lib64/libmpg123.so.0
-/usr/lib64/libmpg123.so.0.45.3
+/usr/lib64/libmpg123.so.0.46.0
 /usr/lib64/libout123.so.0
-/usr/lib64/libout123.so.0.3.0
+/usr/lib64/libout123.so.0.4.0
 /usr/lib64/libsyn123.so.0
 /usr/lib64/libsyn123.so.0.1.2
 /usr/lib64/mpg123/output_alsa.so
@@ -252,9 +252,9 @@ rm -f %{buildroot}/usr/lib64/mpg123/haswell/output_sdl.so
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/libmpg123.so.0
-/usr/lib32/libmpg123.so.0.45.3
+/usr/lib32/libmpg123.so.0.46.0
 /usr/lib32/libout123.so.0
-/usr/lib32/libout123.so.0.3.0
+/usr/lib32/libout123.so.0.4.0
 /usr/lib32/libsyn123.so.0
 /usr/lib32/libsyn123.so.0.1.2
 /usr/lib32/mpg123/output_dummy.so

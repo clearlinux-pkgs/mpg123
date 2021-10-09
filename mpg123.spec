@@ -6,7 +6,7 @@
 #
 Name     : mpg123
 Version  : 1.29.0
-Release  : 38
+Release  : 39
 URL      : https://www.mpg123.de/download/mpg123-1.29.0.tar.bz2
 Source0  : https://www.mpg123.de/download/mpg123-1.29.0.tar.bz2
 Source1  : https://www.mpg123.de/download/mpg123-1.29.0.tar.bz2.sig
@@ -14,6 +14,7 @@ Summary  : An optimised MPEG Audio decoder
 Group    : Development/Tools
 License  : GPL-2.0 LGPL-2.1
 Requires: mpg123-bin = %{version}-%{release}
+Requires: mpg123-filemap = %{version}-%{release}
 Requires: mpg123-lib = %{version}-%{release}
 Requires: mpg123-license = %{version}-%{release}
 Requires: mpg123-man = %{version}-%{release}
@@ -42,6 +43,7 @@ raw data to stdout and different sound systems depending on your platform.
 Summary: bin components for the mpg123 package.
 Group: Binaries
 Requires: mpg123-license = %{version}-%{release}
+Requires: mpg123-filemap = %{version}-%{release}
 
 %description bin
 bin components for the mpg123 package.
@@ -70,10 +72,19 @@ Requires: mpg123-dev = %{version}-%{release}
 dev32 components for the mpg123 package.
 
 
+%package filemap
+Summary: filemap components for the mpg123 package.
+Group: Default
+
+%description filemap
+filemap components for the mpg123 package.
+
+
 %package lib
 Summary: lib components for the mpg123 package.
 Group: Libraries
 Requires: mpg123-license = %{version}-%{release}
+Requires: mpg123-filemap = %{version}-%{release}
 
 %description lib
 lib components for the mpg123 package.
@@ -119,20 +130,20 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1631207549
+export SOURCE_DATE_EPOCH=1633804741
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
-export FCFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
-export FFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
-export CXXFLAGS="$CXXFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
+export CFLAGS="$CFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mno-vzeroupper -mprefer-vector-width=256 "
+export FCFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mno-vzeroupper -mprefer-vector-width=256 "
+export FFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mno-vzeroupper -mprefer-vector-width=256 "
+export CXXFLAGS="$CXXFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mno-vzeroupper -mprefer-vector-width=256 "
 %configure --disable-static
 make  %{?_smp_mflags}
 
 pushd ../build32/
-export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+export PKG_CONFIG_PATH="/usr/lib32/pkgconfig:/usr/share/pkgconfig"
 export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
 export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
 export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
@@ -142,11 +153,11 @@ make  %{?_smp_mflags}
 popd
 unset PKG_CONFIG_PATH
 pushd ../buildavx2/
-export CFLAGS="$CFLAGS -m64 -march=haswell"
-export CXXFLAGS="$CXXFLAGS -m64 -march=haswell"
-export FFLAGS="$FFLAGS -m64 -march=haswell"
-export FCFLAGS="$FCFLAGS -m64 -march=haswell"
-export LDFLAGS="$LDFLAGS -m64 -march=haswell"
+export CFLAGS="$CFLAGS -m64 -march=x86-64-v3"
+export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v3"
+export FFLAGS="$FFLAGS -m64 -march=x86-64-v3"
+export FCFLAGS="$FCFLAGS -m64 -march=x86-64-v3"
+export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v3"
 %configure --disable-static
 make  %{?_smp_mflags}
 popd
@@ -162,7 +173,7 @@ cd ../buildavx2;
 make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1631207549
+export SOURCE_DATE_EPOCH=1633804741
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/mpg123
 cp %{_builddir}/mpg123-1.29.0/COPYING %{buildroot}/usr/share/package-licenses/mpg123/5b0649acc39fef80cccbf195783245940f951fc5
@@ -174,9 +185,16 @@ pushd %{buildroot}/usr/lib32/pkgconfig
 for i in *.pc ; do ln -s $i 32$i ; done
 popd
 fi
+if [ -d %{buildroot}/usr/share/pkgconfig ]
+then
+pushd %{buildroot}/usr/share/pkgconfig
+for i in *.pc ; do ln -s $i 32$i ; done
+popd
+fi
 popd
 pushd ../buildavx2/
-%make_install_avx2
+%make_install_v3
+/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot}/usr/share/clear/optimized-elf/ %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 popd
 %make_install
 ## Remove excluded files
@@ -192,14 +210,11 @@ rm -f %{buildroot}/usr/lib64/mpg123/haswell/output_sdl.so
 
 %files bin
 %defattr(-,root,root,-)
-/usr/bin/haswell/mpg123
-/usr/bin/haswell/mpg123-id3dump
-/usr/bin/haswell/mpg123-strip
-/usr/bin/haswell/out123
 /usr/bin/mpg123
 /usr/bin/mpg123-id3dump
 /usr/bin/mpg123-strip
 /usr/bin/out123
+/usr/share/clear/optimized-elf/bin*
 
 %files dev
 %defattr(-,root,root,-)
@@ -207,9 +222,6 @@ rm -f %{buildroot}/usr/lib64/mpg123/haswell/output_sdl.so
 /usr/include/mpg123.h
 /usr/include/out123.h
 /usr/include/syn123.h
-/usr/lib64/haswell/libmpg123.so
-/usr/lib64/haswell/libout123.so
-/usr/lib64/haswell/libsyn123.so
 /usr/lib64/libmpg123.so
 /usr/lib64/libout123.so
 /usr/lib64/libsyn123.so
@@ -229,14 +241,12 @@ rm -f %{buildroot}/usr/lib64/mpg123/haswell/output_sdl.so
 /usr/lib32/pkgconfig/libout123.pc
 /usr/lib32/pkgconfig/libsyn123.pc
 
+%files filemap
+%defattr(-,root,root,-)
+/usr/share/clear/filemap/filemap-mpg123
+
 %files lib
 %defattr(-,root,root,-)
-/usr/lib64/haswell/libmpg123.so.0
-/usr/lib64/haswell/libmpg123.so.0.46.4
-/usr/lib64/haswell/libout123.so.0
-/usr/lib64/haswell/libout123.so.0.4.2
-/usr/lib64/haswell/libsyn123.so.0
-/usr/lib64/haswell/libsyn123.so.0.1.4
 /usr/lib64/libmpg123.so.0
 /usr/lib64/libmpg123.so.0.46.4
 /usr/lib64/libout123.so.0
@@ -248,6 +258,7 @@ rm -f %{buildroot}/usr/lib64/mpg123/haswell/output_sdl.so
 /usr/lib64/mpg123/output_oss.so
 /usr/lib64/mpg123/output_pulse.so
 /usr/lib64/mpg123/output_sdl.so
+/usr/share/clear/optimized-elf/lib*
 
 %files lib32
 %defattr(-,root,root,-)

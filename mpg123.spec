@@ -6,7 +6,7 @@
 #
 Name     : mpg123
 Version  : 1.29.0
-Release  : 40
+Release  : 41
 URL      : https://www.mpg123.de/download/mpg123-1.29.0.tar.bz2
 Source0  : https://www.mpg123.de/download/mpg123-1.29.0.tar.bz2
 Source1  : https://www.mpg123.de/download/mpg123-1.29.0.tar.bz2.sig

@@ -5,11 +5,11 @@
 # Source0 file verified with key 0x231C4CBC60D5CAFE (thomas@orgis.org)
 #
 Name     : mpg123
-Version  : 1.29.1
-Release  : 42
-URL      : https://www.mpg123.de/download/mpg123-1.29.1.tar.bz2
-Source0  : https://www.mpg123.de/download/mpg123-1.29.1.tar.bz2
-Source1  : https://www.mpg123.de/download/mpg123-1.29.1.tar.bz2.sig
+Version  : 1.29.2
+Release  : 43
+URL      : https://www.mpg123.de/download/mpg123-1.29.2.tar.bz2
+Source0  : https://www.mpg123.de/download/mpg123-1.29.2.tar.bz2
+Source1  : https://www.mpg123.de/download/mpg123-1.29.2.tar.bz2.sig
 Summary  : An optimised MPEG Audio decoder
 Group    : Development/Tools
 License  : GPL-2.0 LGPL-2.1
@@ -116,13 +116,13 @@ man components for the mpg123 package.
 
 
 %prep
-%setup -q -n mpg123-1.29.1
-cd %{_builddir}/mpg123-1.29.1
+%setup -q -n mpg123-1.29.2
+cd %{_builddir}/mpg123-1.29.2
 pushd ..
-cp -a mpg123-1.29.1 build32
+cp -a mpg123-1.29.2 build32
 popd
 pushd ..
-cp -a mpg123-1.29.1 buildavx2
+cp -a mpg123-1.29.2 buildavx2
 popd
 
 %build
@@ -130,7 +130,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1634579712
+export SOURCE_DATE_EPOCH=1635116629
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -153,9 +153,9 @@ make  %{?_smp_mflags}
 popd
 unset PKG_CONFIG_PATH
 pushd ../buildavx2/
-export CFLAGS="$CFLAGS -m64 -march=x86-64-v3"
-export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v3"
-export FFLAGS="$FFLAGS -m64 -march=x86-64-v3"
+export CFLAGS="$CFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3"
+export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3"
+export FFLAGS="$FFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3"
 export FCFLAGS="$FCFLAGS -m64 -march=x86-64-v3"
 export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v3"
 %configure --disable-static
@@ -173,10 +173,10 @@ cd ../buildavx2;
 make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1634579712
+export SOURCE_DATE_EPOCH=1635116629
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/mpg123
-cp %{_builddir}/mpg123-1.29.1/COPYING %{buildroot}/usr/share/package-licenses/mpg123/5b0649acc39fef80cccbf195783245940f951fc5
+cp %{_builddir}/mpg123-1.29.2/COPYING %{buildroot}/usr/share/package-licenses/mpg123/5b0649acc39fef80cccbf195783245940f951fc5
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -248,7 +248,7 @@ rm -f %{buildroot}*/usr/lib64/mpg123/haswell/output_sdl.so
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/libmpg123.so.0
-/usr/lib64/libmpg123.so.0.46.5
+/usr/lib64/libmpg123.so.0.46.6
 /usr/lib64/libout123.so.0
 /usr/lib64/libout123.so.0.4.3
 /usr/lib64/libsyn123.so.0
@@ -263,7 +263,7 @@ rm -f %{buildroot}*/usr/lib64/mpg123/haswell/output_sdl.so
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/libmpg123.so.0
-/usr/lib32/libmpg123.so.0.46.5
+/usr/lib32/libmpg123.so.0.46.6
 /usr/lib32/libout123.so.0
 /usr/lib32/libout123.so.0.4.3
 /usr/lib32/libsyn123.so.0

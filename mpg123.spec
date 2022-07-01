@@ -6,7 +6,7 @@
 #
 Name     : mpg123
 Version  : 1.30.0
-Release  : 47
+Release  : 48
 URL      : https://www.mpg123.de/download/mpg123-1.30.0.tar.bz2
 Source0  : https://www.mpg123.de/download/mpg123-1.30.0.tar.bz2
 Source1  : https://www.mpg123.de/download/mpg123-1.30.0.tar.bz2.sig
@@ -130,7 +130,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1656341575
+export SOURCE_DATE_EPOCH=1656713852
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -173,7 +173,7 @@ cd ../buildavx2;
 make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1656341575
+export SOURCE_DATE_EPOCH=1656713852
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/mpg123
 cp %{_builddir}/mpg123-1.30.0/COPYING %{buildroot}/usr/share/package-licenses/mpg123/5b0649acc39fef80cccbf195783245940f951fc5
@@ -267,6 +267,7 @@ rm -f %{buildroot}*/usr/lib64/mpg123/haswell/output_sdl.so
 /usr/lib64/mpg123/output_oss.so
 /usr/lib64/mpg123/output_pulse.so
 /usr/lib64/mpg123/output_sdl.so
+/usr/share/clear/optimized-elf/other*
 
 %files lib32
 %defattr(-,root,root,-)

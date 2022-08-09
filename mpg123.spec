@@ -5,11 +5,11 @@
 # Source0 file verified with key 0x231C4CBC60D5CAFE (thomas@orgis.org)
 #
 Name     : mpg123
-Version  : 1.30.1
-Release  : 49
-URL      : https://www.mpg123.de/download/mpg123-1.30.1.tar.bz2
-Source0  : https://www.mpg123.de/download/mpg123-1.30.1.tar.bz2
-Source1  : https://www.mpg123.de/download/mpg123-1.30.1.tar.bz2.sig
+Version  : 1.30.2
+Release  : 50
+URL      : https://www.mpg123.de/download/mpg123-1.30.2.tar.bz2
+Source0  : https://www.mpg123.de/download/mpg123-1.30.2.tar.bz2
+Source1  : https://www.mpg123.de/download/mpg123-1.30.2.tar.bz2.sig
 Summary  : An optimised MPEG Audio decoder
 Group    : Development/Tools
 License  : GPL-2.0 LGPL-2.1
@@ -116,13 +116,13 @@ man components for the mpg123 package.
 
 
 %prep
-%setup -q -n mpg123-1.30.1
-cd %{_builddir}/mpg123-1.30.1
+%setup -q -n mpg123-1.30.2
+cd %{_builddir}/mpg123-1.30.2
 pushd ..
-cp -a mpg123-1.30.1 build32
+cp -a mpg123-1.30.2 build32
 popd
 pushd ..
-cp -a mpg123-1.30.1 buildavx2
+cp -a mpg123-1.30.2 buildavx2
 popd
 
 %build
@@ -130,7 +130,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1657724463
+export SOURCE_DATE_EPOCH=1660057661
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -173,10 +173,10 @@ cd ../buildavx2;
 make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1657724463
+export SOURCE_DATE_EPOCH=1660057661
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/mpg123
-cp %{_builddir}/mpg123-1.30.1/COPYING %{buildroot}/usr/share/package-licenses/mpg123/5b0649acc39fef80cccbf195783245940f951fc5
+cp %{_builddir}/mpg123-%{version}/COPYING %{buildroot}/usr/share/package-licenses/mpg123/5b0649acc39fef80cccbf195783245940f951fc5
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]

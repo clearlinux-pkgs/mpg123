@@ -6,7 +6,7 @@
 #
 Name     : mpg123
 Version  : 1.30.2
-Release  : 51
+Release  : 52
 URL      : https://www.mpg123.de/download/mpg123-1.30.2.tar.bz2
 Source0  : https://www.mpg123.de/download/mpg123-1.30.2.tar.bz2
 Source1  : https://www.mpg123.de/download/mpg123-1.30.2.tar.bz2.sig

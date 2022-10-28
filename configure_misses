@@ -67,6 +67,9 @@ Configure miss: OpenAL/alc.h usability
 Configure miss: Pa_Initialize in -lportaudio
 Configure miss: Pa_Initialize in -lportaudio
 Configure miss: Pa_Initialize in -lportaudio
+Configure miss: SNDIO
+Configure miss: SNDIO
+Configure miss: SNDIO
 Configure miss: al.h
 Configure miss: al.h
 Configure miss: al.h
@@ -100,6 +103,9 @@ Configure miss: asm/audioio.h usability
 Configure miss: if we have wasapi headers
 Configure miss: if we have wasapi headers
 Configure miss: if we have wasapi headers
+Configure miss: if we have wincon.h
+Configure miss: if we have wincon.h
+Configure miss: if we have wincon.h
 Configure miss: if you are too dumbing dumb for the dummy
 Configure miss: if you are too dumbing dumb for the dummy
 Configure miss: if you are too dumbing dumb for the dummy
@@ -130,9 +136,6 @@ Configure miss: pcm_open in -ltinyalsa
 Configure miss: powf in -lmx
 Configure miss: powf in -lmx
 Configure miss: powf in -lmx
-Configure miss: sio_open in -lsndio
-Configure miss: sio_open in -lsndio
-Configure miss: sio_open in -lsndio
 Configure miss: snd_pcm_open in -lasound
 Configure miss: sun/audioio.h
 Configure miss: sun/audioio.h

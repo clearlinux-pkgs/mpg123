@@ -5,3 +5,5 @@ esound
 jack
 32jack
 32sdl
+32sndio
+sndio

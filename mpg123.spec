@@ -7,7 +7,7 @@
 #
 Name     : mpg123
 Version  : 1.31.3
-Release  : 59
+Release  : 60
 URL      : https://www.mpg123.de/download/mpg123-1.31.3.tar.bz2
 Source0  : https://www.mpg123.de/download/mpg123-1.31.3.tar.bz2
 Source1  : https://www.mpg123.de/download/mpg123-1.31.3.tar.bz2.sig
@@ -15,12 +15,11 @@ Summary  : An optimised MPEG Audio decoder
 Group    : Development/Tools
 License  : GPL-2.0 LGPL-2.1
 Requires: mpg123-bin = %{version}-%{release}
-Requires: mpg123-filemap = %{version}-%{release}
 Requires: mpg123-lib = %{version}-%{release}
 Requires: mpg123-license = %{version}-%{release}
 Requires: mpg123-man = %{version}-%{release}
 BuildRequires : alsa-lib-dev
-BuildRequires : buildreq-cmake
+BuildRequires : buildreq-configure
 BuildRequires : gcc-dev32
 BuildRequires : gcc-libgcc32
 BuildRequires : gcc-libstdc++32
@@ -47,7 +46,6 @@ raw data to stdout and different sound systems depending on your platform.
 Summary: bin components for the mpg123 package.
 Group: Binaries
 Requires: mpg123-license = %{version}-%{release}
-Requires: mpg123-filemap = %{version}-%{release}
 
 %description bin
 bin components for the mpg123 package.
@@ -76,19 +74,10 @@ Requires: mpg123-dev = %{version}-%{release}
 dev32 components for the mpg123 package.
 
 
-%package filemap
-Summary: filemap components for the mpg123 package.
-Group: Default
-
-%description filemap
-filemap components for the mpg123 package.
-
-
 %package lib
 Summary: lib components for the mpg123 package.
 Group: Libraries
 Requires: mpg123-license = %{version}-%{release}
-Requires: mpg123-filemap = %{version}-%{release}
 
 %description lib
 lib components for the mpg123 package.
@@ -134,15 +123,15 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1679324396
+export SOURCE_DATE_EPOCH=1683060441
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -Ofast -falign-functions=32 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -fno-semantic-interposition -g1 -gno-column-info -gno-variable-location-views -gz "
-export FCFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -fno-semantic-interposition -g1 -gno-column-info -gno-variable-location-views -gz "
-export FFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -fno-semantic-interposition -g1 -gno-column-info -gno-variable-location-views -gz "
-export CXXFLAGS="$CXXFLAGS -O3 -Ofast -falign-functions=32 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -fno-semantic-interposition -g1 -gno-column-info -gno-variable-location-views -gz "
+export CFLAGS="$CFLAGS -O3 -Ofast -falign-functions=32 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -fno-semantic-interposition -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
+export FCFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -fno-semantic-interposition -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
+export FFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -fno-semantic-interposition -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
+export CXXFLAGS="$CXXFLAGS -O3 -Ofast -falign-functions=32 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -fno-semantic-interposition -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
 %configure --disable-static
 make  %{?_smp_mflags}
 
@@ -177,7 +166,7 @@ cd ../buildavx2;
 make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1679324396
+export SOURCE_DATE_EPOCH=1683060441
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/mpg123
 cp %{_builddir}/mpg123-%{version}/COPYING %{buildroot}/usr/share/package-licenses/mpg123/5b0649acc39fef80cccbf195783245940f951fc5 || :
@@ -214,21 +203,24 @@ rm -f %{buildroot}*/usr/lib64/mpg123/haswell/output_sdl.so
 
 %files bin
 %defattr(-,root,root,-)
+/V3/usr/bin/mpg123
+/V3/usr/bin/mpg123-id3dump
+/V3/usr/bin/mpg123-strip
+/V3/usr/bin/out123
 /usr/bin/mpg123
 /usr/bin/mpg123-id3dump
 /usr/bin/mpg123-strip
 /usr/bin/out123
-/usr/share/clear/optimized-elf/bin*
 
 %files dev
 %defattr(-,root,root,-)
+/V3/usr/lib64/libmpg123.so
+/V3/usr/lib64/libout123.so
+/V3/usr/lib64/libsyn123.so
 /usr/include/fmt123.h
 /usr/include/mpg123.h
 /usr/include/out123.h
 /usr/include/syn123.h
-/usr/lib64/glibc-hwcaps/x86-64-v3/libmpg123.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libout123.so
-/usr/lib64/glibc-hwcaps/x86-64-v3/libsyn123.so
 /usr/lib64/libmpg123.so
 /usr/lib64/libout123.so
 /usr/lib64/libsyn123.so
@@ -248,18 +240,19 @@ rm -f %{buildroot}*/usr/lib64/mpg123/haswell/output_sdl.so
 /usr/lib32/pkgconfig/libout123.pc
 /usr/lib32/pkgconfig/libsyn123.pc
 
-%files filemap
-%defattr(-,root,root,-)
-/usr/share/clear/filemap/filemap-mpg123
-
 %files lib
 %defattr(-,root,root,-)
-/usr/lib64/glibc-hwcaps/x86-64-v3/libmpg123.so.0
-/usr/lib64/glibc-hwcaps/x86-64-v3/libmpg123.so.0.47.0
-/usr/lib64/glibc-hwcaps/x86-64-v3/libout123.so.0
-/usr/lib64/glibc-hwcaps/x86-64-v3/libout123.so.0.4.7
-/usr/lib64/glibc-hwcaps/x86-64-v3/libsyn123.so.0
-/usr/lib64/glibc-hwcaps/x86-64-v3/libsyn123.so.0.1.5
+/V3/usr/lib64/libmpg123.so.0
+/V3/usr/lib64/libmpg123.so.0.47.0
+/V3/usr/lib64/libout123.so.0
+/V3/usr/lib64/libout123.so.0.4.7
+/V3/usr/lib64/libsyn123.so.0
+/V3/usr/lib64/libsyn123.so.0.1.5
+/V3/usr/lib64/mpg123/output_alsa.so
+/V3/usr/lib64/mpg123/output_dummy.so
+/V3/usr/lib64/mpg123/output_oss.so
+/V3/usr/lib64/mpg123/output_pulse.so
+/V3/usr/lib64/mpg123/output_sdl.so
 /usr/lib64/libmpg123.so.0
 /usr/lib64/libmpg123.so.0.47.0
 /usr/lib64/libout123.so.0
@@ -271,7 +264,6 @@ rm -f %{buildroot}*/usr/lib64/mpg123/haswell/output_sdl.so
 /usr/lib64/mpg123/output_oss.so
 /usr/lib64/mpg123/output_pulse.so
 /usr/lib64/mpg123/output_sdl.so
-/usr/share/clear/optimized-elf/other*
 
 %files lib32
 %defattr(-,root,root,-)

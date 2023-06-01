@@ -7,7 +7,7 @@
 #
 Name     : mpg123
 Version  : 1.31.3
-Release  : 60
+Release  : 61
 URL      : https://www.mpg123.de/download/mpg123-1.31.3.tar.bz2
 Source0  : https://www.mpg123.de/download/mpg123-1.31.3.tar.bz2
 Source1  : https://www.mpg123.de/download/mpg123-1.31.3.tar.bz2.sig
@@ -123,7 +123,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1683060441
+export SOURCE_DATE_EPOCH=1685592718
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -166,7 +166,7 @@ cd ../buildavx2;
 make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1683060441
+export SOURCE_DATE_EPOCH=1685592718
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/mpg123
 cp %{_builddir}/mpg123-%{version}/COPYING %{buildroot}/usr/share/package-licenses/mpg123/5b0649acc39fef80cccbf195783245940f951fc5 || :
@@ -214,9 +214,6 @@ rm -f %{buildroot}*/usr/lib64/mpg123/haswell/output_sdl.so
 
 %files dev
 %defattr(-,root,root,-)
-/V3/usr/lib64/libmpg123.so
-/V3/usr/lib64/libout123.so
-/V3/usr/lib64/libsyn123.so
 /usr/include/fmt123.h
 /usr/include/mpg123.h
 /usr/include/out123.h
@@ -242,11 +239,8 @@ rm -f %{buildroot}*/usr/lib64/mpg123/haswell/output_sdl.so
 
 %files lib
 %defattr(-,root,root,-)
-/V3/usr/lib64/libmpg123.so.0
 /V3/usr/lib64/libmpg123.so.0.47.0
-/V3/usr/lib64/libout123.so.0
 /V3/usr/lib64/libout123.so.0.4.7
-/V3/usr/lib64/libsyn123.so.0
 /V3/usr/lib64/libsyn123.so.0.1.5
 /V3/usr/lib64/mpg123/output_alsa.so
 /V3/usr/lib64/mpg123/output_dummy.so

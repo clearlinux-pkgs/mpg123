@@ -7,7 +7,7 @@
 #
 Name     : mpg123
 Version  : 1.31.3
-Release  : 61
+Release  : 62
 URL      : https://www.mpg123.de/download/mpg123-1.31.3.tar.bz2
 Source0  : https://www.mpg123.de/download/mpg123-1.31.3.tar.bz2
 Source1  : https://www.mpg123.de/download/mpg123-1.31.3.tar.bz2.sig
@@ -27,10 +27,7 @@ BuildRequires : glibc-dev32
 BuildRequires : glibc-libc32
 BuildRequires : pkg-config
 BuildRequires : pkgconfig(32libpulse-simple)
-BuildRequires : pkgconfig(32sdl2)
 BuildRequires : pkgconfig(libpulse-simple)
-BuildRequires : pkgconfig(sdl)
-BuildRequires : pkgconfig(sdl2)
 # Suppress stripping binaries
 %define __strip /bin/true
 %define debug_package %{nil}
@@ -123,7 +120,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1685592718
+export SOURCE_DATE_EPOCH=1689723416
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -166,7 +163,7 @@ cd ../buildavx2;
 make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1685592718
+export SOURCE_DATE_EPOCH=1689723416
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/mpg123
 cp %{_builddir}/mpg123-%{version}/COPYING %{buildroot}/usr/share/package-licenses/mpg123/5b0649acc39fef80cccbf195783245940f951fc5 || :
@@ -246,7 +243,6 @@ rm -f %{buildroot}*/usr/lib64/mpg123/haswell/output_sdl.so
 /V3/usr/lib64/mpg123/output_dummy.so
 /V3/usr/lib64/mpg123/output_oss.so
 /V3/usr/lib64/mpg123/output_pulse.so
-/V3/usr/lib64/mpg123/output_sdl.so
 /usr/lib64/libmpg123.so.0
 /usr/lib64/libmpg123.so.0.47.0
 /usr/lib64/libout123.so.0
@@ -257,7 +253,6 @@ rm -f %{buildroot}*/usr/lib64/mpg123/haswell/output_sdl.so
 /usr/lib64/mpg123/output_dummy.so
 /usr/lib64/mpg123/output_oss.so
 /usr/lib64/mpg123/output_pulse.so
-/usr/lib64/mpg123/output_sdl.so
 
 %files lib32
 %defattr(-,root,root,-)
@@ -270,7 +265,6 @@ rm -f %{buildroot}*/usr/lib64/mpg123/haswell/output_sdl.so
 /usr/lib32/mpg123/output_dummy.so
 /usr/lib32/mpg123/output_oss.so
 /usr/lib32/mpg123/output_pulse.so
-/usr/lib32/mpg123/output_sdl.so
 
 %files license
 %defattr(0644,root,root,0755)

@@ -8,11 +8,11 @@
 # Source0 file verified with key 0x231C4CBC60D5CAFE (thomas@orgis.org)
 #
 Name     : mpg123
-Version  : 1.32.8
-Release  : 71
-URL      : https://www.mpg123.de/download/mpg123-1.32.8.tar.bz2
-Source0  : https://www.mpg123.de/download/mpg123-1.32.8.tar.bz2
-Source1  : https://www.mpg123.de/download/mpg123-1.32.8.tar.bz2.sig
+Version  : 1.32.9
+Release  : 72
+URL      : https://www.mpg123.de/download/mpg123-1.32.9.tar.bz2
+Source0  : https://www.mpg123.de/download/mpg123-1.32.9.tar.bz2
+Source1  : https://www.mpg123.de/download/mpg123-1.32.9.tar.bz2.sig
 Source2  : 231C4CBC60D5CAFE.pkey
 Summary  : An optimised MPEG Audio decoder
 Group    : Development/Tools
@@ -116,13 +116,13 @@ chmod 700 .gnupg
 gpg --homedir .gnupg --import %{SOURCE2}
 gpg --homedir .gnupg --status-fd 1 --verify %{SOURCE1} %{SOURCE0} > gpg.status
 grep -E '^\[GNUPG:\] (GOODSIG|EXPKEYSIG) 231C4CBC60D5CAFE' gpg.status
-%setup -q -n mpg123-1.32.8
-cd %{_builddir}/mpg123-1.32.8
+%setup -q -n mpg123-1.32.9
+cd %{_builddir}/mpg123-1.32.9
 pushd ..
-cp -a mpg123-1.32.8 build32
+cp -a mpg123-1.32.9 build32
 popd
 pushd ..
-cp -a mpg123-1.32.8 buildavx2
+cp -a mpg123-1.32.9 buildavx2
 popd
 
 %build
@@ -130,7 +130,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1730128141
+export SOURCE_DATE_EPOCH=1730667637
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -195,7 +195,7 @@ FFLAGS="$CLEAR_INTERMEDIATE_FFLAGS"
 FCFLAGS="$CLEAR_INTERMEDIATE_FCFLAGS"
 ASFLAGS="$CLEAR_INTERMEDIATE_ASFLAGS"
 LDFLAGS="$CLEAR_INTERMEDIATE_LDFLAGS"
-export SOURCE_DATE_EPOCH=1730128141
+export SOURCE_DATE_EPOCH=1730667637
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/mpg123
 cp %{_builddir}/mpg123-%{version}/COPYING %{buildroot}/usr/share/package-licenses/mpg123/5b0649acc39fef80cccbf195783245940f951fc5 || :
@@ -271,7 +271,7 @@ rm -f %{buildroot}*/usr/lib64/mpg123/haswell/output_sdl.so
 
 %files lib
 %defattr(-,root,root,-)
-/V3/usr/lib64/libmpg123.so.0.48.2
+/V3/usr/lib64/libmpg123.so.0.48.3
 /V3/usr/lib64/libout123.so.0.5.1
 /V3/usr/lib64/libsyn123.so.0.2.3
 /V3/usr/lib64/mpg123/output_alsa.so
@@ -280,7 +280,7 @@ rm -f %{buildroot}*/usr/lib64/mpg123/haswell/output_sdl.so
 /V3/usr/lib64/mpg123/output_pulse.so
 /V3/usr/lib64/mpg123/output_sdl.so
 /usr/lib64/libmpg123.so.0
-/usr/lib64/libmpg123.so.0.48.2
+/usr/lib64/libmpg123.so.0.48.3
 /usr/lib64/libout123.so.0
 /usr/lib64/libout123.so.0.5.1
 /usr/lib64/libsyn123.so.0
@@ -294,7 +294,7 @@ rm -f %{buildroot}*/usr/lib64/mpg123/haswell/output_sdl.so
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/libmpg123.so.0
-/usr/lib32/libmpg123.so.0.48.2
+/usr/lib32/libmpg123.so.0.48.3
 /usr/lib32/libout123.so.0
 /usr/lib32/libout123.so.0.5.1
 /usr/lib32/libsyn123.so.0

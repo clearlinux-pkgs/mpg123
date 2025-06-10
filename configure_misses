@@ -72,6 +72,9 @@ Configure miss: snd_pcm_open in -lasound
 Configure miss: sndio
 Configure miss: sndio
 Configure miss: sndio
+Configure miss: strtok_s
+Configure miss: strtok_s
+Configure miss: strtok_s
 Configure miss: sun/audioio.h
 Configure miss: sun/audioio.h
 Configure miss: sun/audioio.h
